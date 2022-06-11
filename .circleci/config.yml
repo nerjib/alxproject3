@@ -60,7 +60,7 @@ jobs:
             - npm install
             - npm run build
           command: |
-          echo 'bckend succes'
+            echo 'bckend succes'
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
