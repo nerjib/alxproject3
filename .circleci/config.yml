@@ -33,7 +33,7 @@ jobs:
             - npm install
             - npm run build
           command: |
-            destroy-environment
+            echo 'backend error'
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
