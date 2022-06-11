@@ -12,7 +12,6 @@ commands:
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
-    parameters:
     steps:
       - run:
           name: Revert migrations
