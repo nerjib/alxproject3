@@ -42,11 +42,9 @@ jobs:
           keys: [frontend-build]
       - run:
           name: Build front-end
-            - cd frontend
-            - npm install
-            - npm run build
           command: |
-            destroy-environment
+            # Your code here
+            exit 1
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -60,11 +58,9 @@ jobs:
           keys: [backend-build]
       - run:
           name: Back-end build
-            - cd frontend
-            - npm install
-            - npm run build
           command: |
-            destroy-environment
+             # Your code here
+             exit 1
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
@@ -272,4 +268,30 @@ workflows:
     jobs:
       - build-frontend
       - build-backend
-      
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [test-feature-branch]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
