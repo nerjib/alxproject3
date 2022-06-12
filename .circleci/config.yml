@@ -13,7 +13,7 @@ jobs:
           name: Build front-end
           command: |
             echo 'success'
-            when: on_error
+            when: on_fail
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -31,7 +31,7 @@ jobs:
           name: Back-end build            
           command: |  
             exit 1
-            when: on_error
+            when: on_fail
 
       - save_cache:
           paths: [backend/node_modules]
