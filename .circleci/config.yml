@@ -10,9 +10,9 @@ jobs:
           keys: [frontend-build]
       - run:
           name: Build front-end
-            - cd frontend
-            - npm install
-            - npm run build
+            cd frontend
+            npm install
+            npm run build
           command: |
             echo 'success'
       - save_cache:
