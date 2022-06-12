@@ -25,7 +25,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout:
-      - run: ls && npm run install
+      - run: npm run install
       - restore_cache:
           keys: [backend-build]
       - run:
