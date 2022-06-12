@@ -23,8 +23,8 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - checkout
-          path: ./backend
+      - checkout:
+          path: ~/backend
       - run: cd backend
       - run: npm install
       - restore_cache:
