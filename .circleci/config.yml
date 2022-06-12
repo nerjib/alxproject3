@@ -35,12 +35,6 @@ jobs:
           root: ~/
           paths:
             - backend
-      steps:
-        - checkout
-        - node/with-cache:
-            steps:
-              - run: npm install
-        - run: npm run test
         
       - save_cache:
           paths: [backend/node_modules]
