@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            echo 'success s'
+            echo 'success'
           when: on_fail
       - save_cache:
           paths: [frontend/node_modules]
