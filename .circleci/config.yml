@@ -46,7 +46,8 @@ jobs:
           keys: [frontend-build]
                 
   test-backend:
-    - image: circleci/node:13.8.0
+    docker:
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run: cd backend && npm install && npm run build && npm run test
