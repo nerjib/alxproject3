@@ -62,8 +62,8 @@ jobs:
             - npm run start
           command: |
             echo "Hello Error!"
-          when: on_fail
             exit 1
+          when: on_fail
 
       - save_cache:
           paths: [backend/node_modules]
