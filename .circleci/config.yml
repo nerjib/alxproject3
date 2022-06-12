@@ -28,10 +28,8 @@ jobs:
           keys: [backend-build]
       - run:
           name: Back-end build            
-          command: |
-            - npm run build
+          command:  npm run build
             exit 1
-          when: on_fail
 
       - save_cache:
           paths: [backend/node_modules]
