@@ -24,9 +24,8 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - checkout:
-          path: ~/ALXPROJECT3/backend
-      - run: cd ~/ALXPROJECT3/backend && npm run install
+      - checkout
+      - run: cd backend && npm run install
       - restore_cache:
           keys: [backend-build]
       - run:
