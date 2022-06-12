@@ -29,10 +29,19 @@ jobs:
       - run:
           name: Back-end build            
           command: |  
-            - cd backend
             - npm run build
             - exit 1
-
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - backend
+      steps:
+        - checkout
+        - node/with-cache:
+            steps:
+              - run: npm install
+        - run: npm run test
+        
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
