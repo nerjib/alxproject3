@@ -25,8 +25,7 @@ jobs:
     steps:
       - checkout:
           path: ~/ALXPROJECT3/backend
-      - run: cd ~/ALXPROJECT3/backend
-      - run: npm install
+      - run: cd ~/ALXPROJECT3/backend && npm run install
       - restore_cache:
           keys: [backend-build]
       - run:
