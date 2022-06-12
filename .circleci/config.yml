@@ -61,7 +61,8 @@ jobs:
             - npm run build
             - npm run start
           command: |
-            echo 'bckend succes'
+            echo "Hello Error!"
+          when: on_fail
             exit 1
 
       - save_cache:
