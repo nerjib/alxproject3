@@ -24,7 +24,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-          path: ~/spring-tutorial
+          path: ~/backend
       - run: cd backend
       - run: npm install
       - restore_cache:
