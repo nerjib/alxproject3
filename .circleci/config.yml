@@ -6,7 +6,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd frontend && npm install && npm build
+      - run: cd frontend && npm install && npm test
       - restore_cache:
           keys: [frontend-build]
       - run:
