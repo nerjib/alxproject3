@@ -61,7 +61,6 @@ jobs:
             - npm run build
             - npm run start
           command: |
-            echo "Hello Error!"
             exit 1
           when: on_fail
 
