@@ -25,14 +25,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd backend && npm install
+      - run: cd backend && npm install && npm run start
       - restore_cache:
           keys: [backend-build]
       - run:
           name: Back-end build            
           command: |  
-            - exit 1
-        
+            exit 1
+            when: on_error
+
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
