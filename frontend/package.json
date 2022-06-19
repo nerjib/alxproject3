@@ -104,7 +104,9 @@
     "redux-actions": "^2.6.5",
     "redux-thunk": "^2.3.0",
     "sweetalert2": "^8.13.4",
-    "ts-jest": "^24.0.2"
+    "ts-jest": "^24.0.2",
+    "enzyme-to-json": "^3.3.5"
+
 
   },
   "jest": {
