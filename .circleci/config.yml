@@ -79,9 +79,9 @@ jobs:
           keys: [backend-build]
 
       - run:
-          name: front-end audit
+          name: backend-end audit
           command: |
-            cd frontend
+            cd backend
             npm install
             npm audit --audit-level=critical
 
