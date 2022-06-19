@@ -107,13 +107,18 @@
     "sweetalert2": "^8.13.4"
   },
   "jest": {
+    "verbose": true,
     "rootDir": "src",
     "coverageDirectory": "../coverage",
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "**/*.{js,jsx}",
-      "!**/node_modules/**",
-      "!**/vendor/**"
+      "<rootDir>/app/**/*.(ts|tsx|js)",
+      "!<rootDir>/app/index.tsx",
+      "!<rootDir>/app/containers/App/*",
+      "!<rootDir>/app/(reducers|components|store|services)/index.ts",
+      "!<rootDir>/app/(middleware|actions|containers|models|utils)/*",
+      "!<rootDir>/app/components/(Error|Callback)/*",
+      "!<rootDir>/app/services/(httpService).ts"
     ],
     "moduleFileExtensions": [
       "ts",
