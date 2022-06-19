@@ -127,7 +127,7 @@
       "json"
     ],
     "transform": {
-      "\\.(ts|tsx)$": "ts-jest"
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest"
     },
     "setupFiles": [
       "raf/polyfill"
