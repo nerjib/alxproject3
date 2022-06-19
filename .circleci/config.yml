@@ -21,7 +21,7 @@ jobs:
   build-backend:
   
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:18.4.0
     steps:
       - checkout
       - run: cd backend && npm install && npm run build && npm run start
@@ -38,7 +38,7 @@ jobs:
           key: backend-build
   build-backend2:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:18.4.0
     steps:
       - checkout
       - restore_cache:
