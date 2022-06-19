@@ -19,24 +19,6 @@ jobs:
           key: frontend-build
 
   build-backend:
-  
-    docker:
-      - image: cimg/node:18.4.0
-    steps:
-      - checkout
-      - run: cd backend && npm install && npm run build && npm run start
-      - restore_cache:
-          keys: [backend-build]
-      - run:
-          name: Back-end build            
-          command: |  
-            exit 1
-          when: on_fail
-
-      - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
-  build-backend2:
     docker:
       - image: cimg/node:14.1.0
     steps:
@@ -72,6 +54,36 @@ jobs:
       - run: cd backend && npm install  && npm run test
       - restore_cache:
           keys: [backend-build]
+  scan-frontend:
+    docker:
+      - image: circleci/node:14.1.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+
+      - run:
+          name: front-end audit
+          command: |
+            cd frontend
+            npm install
+            npm audit --audit-level=critical
+
+
+  scan-backend:
+    docker:
+      - image: circleci/node:14.1.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+
+      - run:
+          name: front-end audit
+          command: |
+            cd frontend
+            npm install
+            npm audit --audit-level=critical
 
 workflows:
   default:
@@ -83,3 +95,7 @@ workflows:
           requires: [build-frontend]
       - test-backend:
           requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
