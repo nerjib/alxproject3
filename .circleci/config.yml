@@ -1,7 +1,21 @@
 version: 2.1
+
+commands:
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      ID: ${CIRCLE_WORKFLOW_ID}   
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws delete-stack --stack-name udacityStack
+          when: on_fail
+
 orbs:
   slack: circleci/slack@4.1
-  
+
 jobs:
   build-frontend:
     docker:
@@ -97,6 +111,38 @@ jobs:
           event: fail
           mentions: '@EngineeringTeam'
           template: basic_fail_1
+  deploy-infrastructure:
+    docker:
+      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags project= udapeople \
+              --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID} \
+              --parameter-overrides ID= ${CIRCLE_WORKFLOW_ID}  
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=udapeople \
+              --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}  
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            - run: echo "hello world" > ~/inventory.txt
+            exit 1
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
+      # Here's where you will add some code to rollback on failure      
       
 workflows:
   default:
@@ -109,6 +155,4 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-      - scan-backend:
-          requires: [build-backend]
-            
+      
