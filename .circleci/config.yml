@@ -137,7 +137,6 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             - run: echo "hello world" > ~/inventory.txt
-            exit 1
       - persist_to_workspace:
           root: ~/
           paths:
@@ -155,4 +154,8 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-      
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [test-feature-branch]
