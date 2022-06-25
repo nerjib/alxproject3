@@ -12,8 +12,8 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID} 
-            aws delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID}
+            aws delete-stack --stack-name udapeople-backend-<<parameters.ID>> 
+            aws delete-stack --stack-name udapeople-frontend-<<parameters.ID>>
 
 orbs:
   slack: circleci/slack@4.1
@@ -125,8 +125,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags "project= udapeople" \
-              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID}" \
-              --parameter-overrides "ID=${CIRCLE_WORKFLOW_ID}" 
+              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides "ID=${CIRCLE_WORKFLOW_ID:0:7}" 
 
       - run:
           name: Ensure front-end infrastructure exist
@@ -134,13 +134,41 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags "project=udapeople" \
-              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID}" \
-              --parameter-overrides "ID=${CIRCLE_WORKFLOW_ID}"  
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides "ID=${CIRCLE_WORKFLOW_ID:0:7}"  
       
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+  configure-infrastructure:
+    docker:
+      # Docker image here that supports Ansible
+      - image: circleci/python:3.6.2
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["74:2d:30:b3:36:63:7d:0c:cc:53:d7:f2:99:ca:0a:98"]      
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+            ansible --version
+      - run:
+          name: Configure server
+          command: |
+            pwd &&
+            ls -la
+            cat inventory
+            ansible-playbook -i inventory configure-server.yaml
+      # Here's where you will add some code to rollback on failure      
+      - destroy_environment:
+          ID: ${CIRCLE_WORKFLOW_ID:0:7}
+          when: on_fail
+
   buildEnv:
     docker:
       - image: cimg/base:2020.01
