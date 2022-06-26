@@ -182,6 +182,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npx install --force
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to memstash
