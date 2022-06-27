@@ -26,16 +26,11 @@ jobs:
     steps:
       - checkout
       - run: cd frontend && npm install && npm build
-      - restore_cache:
-          keys: [frontend-build]
       - run:
           name: Build front-end
           command: |
             echo 'success f'
           when: on_fail
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
       - slack/notify:
           event: fail
           mentions: '@EngineeringTeam'
@@ -48,8 +43,6 @@ jobs:
       - image: cimg/node:14.1.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Back-end build
           command: |
@@ -58,18 +51,13 @@ jobs:
             npm run build
             npm run start
             
-      - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
-
+      
   test-frontend:
     docker:
       - image: circleci/node:14.1.0
     steps:
       - checkout
       - run: cd frontend && npm install && npm run test
-      - restore_cache:
-          keys: [frontend-build]
                 
   test-backend:
     docker:
@@ -77,16 +65,13 @@ jobs:
     steps:
       - checkout
       - run: cd backend && npm install  && npm run test
-      - restore_cache:
-          keys: [backend-build]
+      
   scan-frontend:
     docker:
       - image: circleci/node:14.1.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
-
+      
       - run:
           name: front-end audit
           command: |
@@ -101,9 +86,7 @@ jobs:
       - image: circleci/node:14.1.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
-
+      
       - run:
           name: backend-end audit
           command: |
