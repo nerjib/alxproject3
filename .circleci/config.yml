@@ -155,7 +155,6 @@ jobs:
           at: .
       - run:
           name: Install dependencies
-          working_directory: .circleci/ansible/
           command: |
             apk add --update ansible
       - run:
@@ -173,7 +172,6 @@ jobs:
       - checkout
       - run:
           name: Install AWS CLI dependencies
-          working_directory: /tmp
           command: |
             sudo apt-get update && sudo apt-get install -yy less
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -188,7 +186,7 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |          
-            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
+            if grep -q "has been executed successfully." ~/ALXPROJECT3/backend/migrations_dump.txt
             then
                 echo "DB migration was successful, will update memstash..."
                 curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
