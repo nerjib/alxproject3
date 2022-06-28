@@ -26,11 +26,16 @@ jobs:
     steps:
       - checkout
       - run: cd frontend && npm install && npm build
+      - restore_cache:
+          keys: [frontend-build]
       - run:
           name: Build front-end
           command: |
             echo 'success f'
           when: on_fail
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
       - slack/notify:
           event: fail
           mentions: '@EngineeringTeam'
@@ -43,6 +48,8 @@ jobs:
       - image: cimg/node:14.1.0
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Back-end build
           command: |
@@ -51,13 +58,18 @@ jobs:
             npm run build
             npm run start
             
-      
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
+
   test-frontend:
     docker:
       - image: circleci/node:14.1.0
     steps:
       - checkout
       - run: cd frontend && npm install && npm run test
+      - restore_cache:
+          keys: [frontend-build]
                 
   test-backend:
     docker:
@@ -65,13 +77,16 @@ jobs:
     steps:
       - checkout
       - run: cd backend && npm install  && npm run test
-      
+      - restore_cache:
+          keys: [backend-build]
   scan-frontend:
     docker:
       - image: circleci/node:14.1.0
     steps:
       - checkout
-      
+      - restore_cache:
+          keys: [frontend-build]
+
       - run:
           name: front-end audit
           command: |
@@ -86,7 +101,9 @@ jobs:
       - image: circleci/node:14.1.0
     steps:
       - checkout
-      
+      - restore_cache:
+          keys: [backend-build]
+
       - run:
           name: backend-end audit
           command: |
@@ -166,17 +183,6 @@ jobs:
             cd backend
             npm install
             npm run migrations > migrations_dump.txt
-      - run:
-          name: Send migration results to memstash
-          command: |          
-            if grep -q "has been executed successfully." ~/ALXPROJECT3/backend/migrations_dump.txt
-            then
-                echo "DB migration was successful, will update memstash..."
-                curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
-            else
-                echo "DB migration failed, please verify setup! Probably the database already exists. Verify setup!"
-
-            fi 
             
      # Here's where you will add some code to rollback on failure      
       - destroy-environment:
