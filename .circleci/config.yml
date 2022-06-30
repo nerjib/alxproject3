@@ -135,7 +135,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople" \
               --output text)
-            curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/${BACKEND_URL}  -d 'http://${BACKEND_IP}:3030'
+            curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/$BACKEND_URL  -d 'http://$BACKEND_IP:3030'
         
     
       - run:
