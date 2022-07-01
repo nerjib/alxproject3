@@ -135,8 +135,8 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udapeople" \
               --output text)
-              
-            curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/BACKEND_URL  -d 'http://$BACKEND_IP:3030'
+
+                  curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/BACKEND_URL  -d $BACKEND_IP --insecure
             echo $BACKEND_IP
     
       - run:
@@ -235,10 +235,13 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_URL=$(curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/BACKEND_URL --insecure) 
-            curl "$BACKEND_URL/api/status" --insecure
-            export API_URL="http://${BACKEND_URL}:3030"
-            echo "${API_URL}"
+            export BACKEND_IP=$(curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/BACKEND_URL --insecure) 
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "API_URL = ${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            cat frontend/.env
+
+
       - run:
           name: Deploy frontend objects
           command: |
