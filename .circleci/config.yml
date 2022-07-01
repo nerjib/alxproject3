@@ -277,7 +277,7 @@ jobs:
           command: |
             echo "Contents  of the inventory.txt file is -------"
             cat .circleci/ansible/inventory.txt
-            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansibledeploy-backend.yml     
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml     
             # Here's whereh you will add some code to rollback on failure  
 
 
