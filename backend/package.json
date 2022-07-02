@@ -84,8 +84,8 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2",
-    "class-validator": "0.12.2",
-    "standard-version": "^7.0.0"
+    "class-validator": "0.13.2",
+    "standard-version": "^9.5.0"
 
   },
   "devDependencies": {
