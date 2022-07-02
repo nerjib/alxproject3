@@ -83,7 +83,8 @@
     "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2",
     "class-validator": "0.13.2",
-    "standard-version": "^9.5.0"
+    "standard-version": "^9.5.0",
+    "dicer": "^0.3.1"
 
   },
   "devDependencies": {
