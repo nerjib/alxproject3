@@ -121,7 +121,7 @@ jobs:
       - run:
           name: backend-end audit
           command: |
-            cd backend
+            cd frontend
             npm install
             npm audit fix
             npm audit --audit-level=critical
