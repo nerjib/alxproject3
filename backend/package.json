@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.18",
-    "@nestjs/platform-express": "^6.10.11",
+    "@nestjs/platform-express": "^8.4.7",
     "typescript": "^3.8.3"
 
   },
