@@ -112,16 +112,12 @@ jobs:
             npm install
             npm audit fix
             npm audit --audit-level=critical
-
-
+            
   scan-backend:
     docker:
       - image: circleci/node:14.1.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
-
       - run:
           name: backend-end audit
           command: |
