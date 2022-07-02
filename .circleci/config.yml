@@ -434,6 +434,10 @@ workflows:
       - deploy-backend:
           requires:
             - run-migrations
+          filters:
+            branches:
+              only:
+                - master
       - deploy-frontend:
           requires:
             - run-migrations
