@@ -164,7 +164,7 @@ jobs:
               --parameter-overrides "ID=${CIRCLE_WORKFLOW_ID:0:7}"  
       - run:
           name: Add backend ip to ansible inventory
-          working_directory: ./.circleci/ansible
+          working_directory: ./
           command: |
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
@@ -290,31 +290,14 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            cd backend
-            npm i
-            npm run build
-            cd ..
-            # Zip the directory
-            tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml     
             # Here's whereh you will add some code to rollback on failure  
        
-
       - destroy-environment:
           ID: ${CIRCLE_WORKFLOW_ID:0:7}
-
-  buildEnv:
-    docker:
-      - image: cimg/base:2020.01
-    steps:
-      - checkout
-      - run:
-          name: "echo an env var that is part of our project"
-          command: |
-            echo ${CIRCLE_WORKFLOW_ID}   
 
   smoke-test:
     docker:
@@ -401,11 +384,11 @@ jobs:
           name: Get old stack workflow id and Remove old stacks and files
           command: |                                                        
             OldWorkFlowID=$(curl https://kvdb.io/GoKFnTqvRVAKS2CcvPr2Vx/workflowId --insecure)
-
+            echo OldWorkflowID
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
               echo "---delete confirmed------"
-              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              aws s3 rm "s3://${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}" 
             else
