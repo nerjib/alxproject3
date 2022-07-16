@@ -399,7 +399,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - buildEnv
       - build-frontend
       - build-backend
       - test-frontend:
