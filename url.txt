@@ -1,2 +1,3 @@
 1. https://github.com/nerjib/alxproject3
-2.  http://udapeople-5dc445a.s3-website-us-east-1.amazonaws.com/
+2.  http://udapeople-3c57112.s3-website-us-east-1.amazonaws.com/
+3.  http://d2obmz3zalyf7k.cloudfront.net/
